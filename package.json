@@ -1,0 +1,17 @@
+{
+  "name": "demo-app",
+  "version": "1.0.0",
+  "description": "Demo app to use Vault kubernets auth backend",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
