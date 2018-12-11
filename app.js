@@ -34,11 +34,18 @@ app.get('/', function (req, res) {
       "role": "simple-node-app"
    })
   .then(response => {
-      res.send(response);
-      // curl -s -k --header "X-Vault-Token: $vault_token" $VAULT_ADDR/v1/secret/simple-node-app
+      let client_token = response.data.auth.client_token;
+      let config = {
+         headers: {'X-Vault-Token': client_token}
+      };
+      return instance.get('https://' + vault_host + ':8200/v1/secret/simple-node-app', config);
+      
   })
+  .then(response => {
+      res.send("Success! The password stored in Vault is \"" + response.data.data.password + "\"");
+   })
   .catch(error => {
-     console.log(error);
+      console.log(error);
       res.send("error");
   });
 
