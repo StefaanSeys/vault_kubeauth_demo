@@ -3,6 +3,12 @@ const express = require('express');
 const fs = require('fs');
 const axios = require('axios');
 
+const instance = axios.create({
+   httpsAgent: new https.Agent({  
+     rejectUnauthorized: false
+   })
+ });
+
 // Setup our server port
 var server_port = process.env.VAULTKUBEAUTHDEMO_SERVICE_PORT || 8080;
 var vault_host = process.env.VAULT_SERVICE_HOST || 'localhost';
@@ -22,7 +28,7 @@ var app = express();
 app.get('/', function (req, res) {
 
    // Call the two vault APIs in a row
-   axios.post('https://' + vault_host + ':8200/v1/auth/kubernetes/login', {
+   instance.post('https://' + vault_host + ':8200/v1/auth/kubernetes/login', {
       "jwt": token, 
       "role": "simple-node-app"
    })
