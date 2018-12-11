@@ -2,6 +2,7 @@ const morgan = require('morgan');
 const express = require('express');
 const fs = require('fs');
 const axios = require('axios');
+const https = require('https');
 
 const instance = axios.create({
    httpsAgent: new https.Agent({  
@@ -34,6 +35,7 @@ app.get('/', function (req, res) {
    })
   .then(response => {
       res.send(response);
+      // curl -s -k --header "X-Vault-Token: $vault_token" $VAULT_ADDR/v1/secret/simple-node-app
   })
   .catch(error => {
      console.log(error);
