@@ -32,10 +32,14 @@ var app = express();
 app.get('/', function (req, res) {
 
    // Get the Vault host
+   var vault_protocol = process.env.VAULT_SERVICE_PROTOCOL || 'https';
    var vault_host = process.env.VAULT_SERVICE_HOST || 'localhost';
+   var vault_port = process.env.VAULT_PORT || 8200;
+   var vault_service = vault_protocol + "://" + vault_host + ":" + vault_port;
+
 
    // Call the two vault APIs in a row
-   instance.post('https://' + vault_host + ':8200/v1/auth/kubernetes/login', {
+   instance.post(vault_service + '/v1/auth/kubernetes/login', {
       "jwt": token, 
       "role": "nodeapp-one"
    })
@@ -44,7 +48,7 @@ app.get('/', function (req, res) {
       let config = {
          headers: {'X-Vault-Token': client_token}
       };
-      return instance.get('https://' + vault_host + ':8200/v1/kv/nodeapp/one/stuff', config);
+      return instance.get(vault_service + '/v1/kv/nodeapp/one/stuff', config);
       
   })
   .then(response => {
